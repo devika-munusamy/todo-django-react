@@ -9,19 +9,18 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Checkbox from '@mui/material/Checkbox';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
+import FormLabel from '@mui/material/FormLabel';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import "../styles/CreateTask.css"
 
 export default function FormDialog() {
+  const [taskName, setTaskName] = useState('')
   const [open, setOpen] = useState(false);
-  const [checked, setChecked] = useState(true);
-  const [value, setValue] = useState('once');
-
-  const handle1 = (event) => {
-    setChecked(event.target.checked);
-  };
+  const [done, setDone] = useState(false);
+  const [type, setType] = useState('once');
 
   const handleChange = (event) => {
-    setValue(event.target.value);
+    setType(event.target.value);
   };
 
   const handleClickOpen = () => {
@@ -32,61 +31,56 @@ export default function FormDialog() {
     setOpen(false);
   };
 
+  const createTask = () => {
+    console.log('createTask called', taskName, type, done)
+  }
+
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant="outlined" onClick={handleClickOpen} className="pull-right">
         Open form dialog
       </Button>
       <Dialog
+        maxWidth="sm"
+        fullWidth
         open={open}
         onClose={handleClose}
-        PaperProps={{
-          component: 'form',
-          onSubmit: (event) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries(formData.entries());
-            const email = formJson.email;
-            console.log(email);
-            handleClose();
-          },
-        }}
       >
         <DialogTitle> Create Task </DialogTitle>
-        <DialogContent>
+        <DialogContent className='text-black'>
           <TextField
             autoFocus
             required
-            margin="dense"
-            id="name"
-            name="email"
+            id="task"
+            value={taskName}
+            onChange={(event) => setTaskName(event.target.value)}
             label="Task Name"
-            type="email"
+            type="text"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
-          <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
+          <FormLabel id="demo-radio-buttons-group-label" className='mt-50px'>Task type</FormLabel>
           <RadioGroup
             aria-labelledby="demo-controlled-radio-buttons-group"
             name="controlled-radio-buttons-group"
-            value={value}
+            value={type}
             onChange={handleChange}
+            className='text-black pl-30px mb-50px'
           >
             <FormControlLabel value="once" control={<Radio />} label="Once" />
             <FormControlLabel value="daily" control={<Radio />} label="Daily" />
             <FormControlLabel value="weekly" control={<Radio />} label="Weekly" />
             <FormControlLabel value="monthly" control={<Radio />} label="Monthly" />
           </RadioGroup>
-          <Checkbox
-            checked={checked}
-            onChange={handle1}
-            label="Done"
-            inputProps={{ 'aria-label': 'controlled' }}
-          />
+          <FormLabel component="legend">Task Status</FormLabel>
+          <FormControlLabel className='pl-30px' control={<Checkbox
+            checked={done}
+            onChange={(event) => setDone(event.target.checked)}
+            />} label="Done" />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Subscribe</Button>
+          <Button onClick={handleClose} variant='outlined' color='error'>Cancel</Button>
+          <Button onClick={createTask} variant='contained'>Create Task</Button>
         </DialogActions>
       </Dialog>
     </div>

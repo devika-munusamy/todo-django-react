@@ -5,6 +5,8 @@ import Register from "./pages/Register"
 import Home from "./pages/Home"
 import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/ProtectedRoute"
+import MenuItem from '@mui/material/MenuItem'
+import MenuList from '@mui/material/MenuList'
 
 function Logout() {
   localStorage.clear()
@@ -19,15 +21,17 @@ function RegisterAndLogout() {
 function App() {
   return (
     <div className="d-flex align-items-start bg-dark">
-      <div className="nav flex-column">
-        asddddddddddddd
-      </div>
       <BrowserRouter>
         <Routes>
           <Route
             path="/"
             element={
               <ProtectedRoute>
+                <MenuList>
+                  <MenuItem>Home</MenuItem>
+                  <MenuItem>My account</MenuItem>
+                  <MenuItem>Logout</MenuItem>
+                </MenuList>
                 <Home />
               </ProtectedRoute>
             }

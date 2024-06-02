@@ -55,7 +55,7 @@ function Home() {
             <div>
                 <div>
                     <h2>Tasks</h2>
-                    <CreateTask className="pull-right" />
+                    <CreateTask />
                 </div>
                 <table className="table table-dark table-striped">
                     <thead>
