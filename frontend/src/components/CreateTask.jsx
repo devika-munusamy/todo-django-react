@@ -11,13 +11,16 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormLabel from '@mui/material/FormLabel';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import AddIcon from '@mui/icons-material/Add';
+import api from "../api";
 import "../styles/CreateTask.css"
 
-export default function FormDialog() {
+export default function FormDialog({getTasks}) {
   const [taskName, setTaskName] = useState('')
+  const [desc, setDesc] = useState('')
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
-  const [type, setType] = useState('once');
+  const [task_type, setType] = useState('once');
 
   const handleChange = (event) => {
     setType(event.target.value);
@@ -31,13 +34,26 @@ export default function FormDialog() {
     setOpen(false);
   };
 
-  const createTask = () => {
-    console.log('createTask called', taskName, type, done)
-  }
+  const createTask = (e) => {
+    console.log('create task')
+    e.preventDefault();
+    api
+        .post("/api/tasks/", { title: taskName, content: desc, done, task_type })
+        .then((res) => {
+            console.log('sadasdsadasd', res)
+            if (res.status === 201) {
+              handleClose();
+              getTasks();
+            } else {
+              alert("Failed to make task.");
+            } 
+        })
+        .catch((err) => alert(err));
+  };
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen} className="pull-right">
+      <Button variant="contained" onClick={handleClickOpen} className="pull-right" startIcon={<AddIcon />} size="small">
         Open form dialog
       </Button>
       <Dialog
@@ -48,22 +64,36 @@ export default function FormDialog() {
       >
         <DialogTitle> Create Task </DialogTitle>
         <DialogContent className='text-black'>
-          <TextField
-            autoFocus
-            required
-            id="task"
-            value={taskName}
-            onChange={(event) => setTaskName(event.target.value)}
-            label="Task Name"
-            type="text"
-            fullWidth
-            variant="outlined"
-          />
+          <div>
+            <TextField
+              autoFocus
+              required
+              id="task"
+              value={taskName}
+              onChange={(event) => setTaskName(event.target.value)}
+              label="Task Name"
+              type="text"
+              fullWidth
+              variant="outlined"
+            />
+          </div>
+          <div className='mt-30px'>
+            <TextField
+              id="outlined-multiline-static"
+              multiline
+              rows={2}
+              label="Description"
+              value={desc}
+              fullWidth
+              onChange={(event) => setDesc(event.target.value)}
+            />
+          </div>
+          
           <FormLabel id="demo-radio-buttons-group-label" className='mt-50px'>Task type</FormLabel>
           <RadioGroup
             aria-labelledby="demo-controlled-radio-buttons-group"
             name="controlled-radio-buttons-group"
-            value={type}
+            value={task_type}
             onChange={handleChange}
             className='text-black pl-30px mb-50px'
           >

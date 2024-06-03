@@ -7,8 +7,6 @@ import "../styles/Home.css"
 function Home() {
     console.log('asdasd inside home')
     const [tasks, setTasks] = useState([]);
-    const [content, setContent] = useState("");
-    const [title, setTitle] = useState("");
 
     useEffect(() => {
         getTasks();
@@ -36,33 +34,21 @@ function Home() {
             .catch((error) => alert(error));
     };
 
-    const createTask = (e) => {
-        console.log('create task')
-        e.preventDefault();
-        api
-            .post("/api/tasks/", { content, title })
-            .then((res) => {
-                console.log('sadasdsadasd', res)
-                if (res.status === 201) alert("Task created!");
-                else alert("Failed to make task.");
-                getTasks();
-            })
-            .catch((err) => alert(err));
-    };
-
     return (
-        <div className="tab-content tab-view">
+        <div className="tab-content tab-view p-5">
             <div>
                 <div>
                     <h2>Tasks</h2>
-                    <CreateTask />
+                    <CreateTask getTasks={getTasks} />
                 </div>
                 <table className="table table-dark table-striped">
                     <thead>
                         <tr>
                             <th> # </th>
+                            <th> Status </th>
                             <th> Task </th>
                             <th> Desc </th>
+                            <th> Task Type </th>
                             <th> Created At </th>
                             <th> ... </th>
                         </tr>
@@ -73,32 +59,7 @@ function Home() {
                         ))}
                     </tbody>
                 </table>
-                
             </div>
-            <h2>Create a Task</h2>
-            <form onSubmit={createTask}>
-                <label htmlFor="title">Title:</label>
-                <br />
-                <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    required
-                    onChange={(e) => setTitle(e.target.value)}
-                    value={title}
-                />
-                <label htmlFor="content">Content:</label>
-                <br />
-                <textarea
-                    id="content"
-                    name="content"
-                    required
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                ></textarea>
-                <br />
-                <input type="submit" value="Submit"></input>
-            </form>
         </div>
     );
 }
