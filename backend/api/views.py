@@ -29,6 +29,13 @@ class TaskDelete(generics.DestroyAPIView):
         user = self.request.user
         return Task.objects.filter(author=user)
 
+class UpdateTask(generics.UpdateAPIView):
+    serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Task.objects.filter(author=user)
 
 class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()

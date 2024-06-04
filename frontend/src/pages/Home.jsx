@@ -34,6 +34,17 @@ function Home() {
             .catch((error) => alert(error));
     };
 
+    const updateTask = (row) => {
+        console.log('update task')
+        api
+            .put(`/api/tasks/update/${row.id}/`, {...row, done: !row.done})
+            .then((res) => {
+                alert("Task updated!");
+                getTasks();
+            })
+            .catch((error) => alert(error));
+    }
+
     return (
         <div className="tab-content tab-view p-5">
             <div>
@@ -55,7 +66,7 @@ function Home() {
                     </thead>
                     <tbody>
                         {tasks.map((task) => (
-                            <Task task={task} onDelete={deleteTask} key={task.id} />
+                            <Task task={task} onDelete={deleteTask} onUpdate={updateTask} key={task.id} />
                         ))}
                     </tbody>
                 </table>
