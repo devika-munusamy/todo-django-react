@@ -12,11 +12,16 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormLabel from '@mui/material/FormLabel';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import AddIcon from '@mui/icons-material/Add';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import api from "../api";
 import "../styles/CreateTask.css"
 
 export default function FormDialog({getTasks}) {
   const [taskName, setTaskName] = useState('')
+  const [duedate, setDueDate] = useState()
   const [desc, setDesc] = useState('')
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
@@ -38,7 +43,7 @@ export default function FormDialog({getTasks}) {
     console.log('create task')
     e.preventDefault();
     api
-        .post("/api/tasks/", { title: taskName, content: desc, done, task_type })
+        .post("/api/tasks/", { title: taskName, content: desc, done, task_type, duedate })
         .then((res) => {
             console.log('sadasdsadasd', res)
             if (res.status === 201) {
@@ -102,6 +107,16 @@ export default function FormDialog({getTasks}) {
             <FormControlLabel value="weekly" control={<Radio />} label="Weekly" />
             <FormControlLabel value="monthly" control={<Radio />} label="Monthly" />
           </RadioGroup>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={['DateTimePicker']}>
+              <DateTimePicker
+                label="Due Date"
+                value={duedate}
+                format="DD/MM/YYYY"
+                onChange={(newDate) => setDueDate(newDate)}
+              />
+            </DemoContainer>
+          </LocalizationProvider>
           <FormLabel component="legend">Task Status</FormLabel>
           <FormControlLabel className='pl-30px' control={<Checkbox
             checked={done}

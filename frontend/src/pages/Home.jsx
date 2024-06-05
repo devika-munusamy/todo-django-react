@@ -61,6 +61,7 @@ function Home() {
                             <th> Desc </th>
                             <th> Task Type </th>
                             <th> Created At </th>
+                            <th> Due Date </th>
                             <th> ... </th>
                         </tr>
                     </thead>

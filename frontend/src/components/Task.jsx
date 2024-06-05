@@ -5,7 +5,7 @@ import Checkbox from '@mui/material/Checkbox';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 function Task({ task, onDelete, onUpdate }) {
-    const formattedDate = new Date(task.created_at).toLocaleDateString("en-US")
+    const formattedDate = (date) => new Date(date).toLocaleDateString();
 
     return (
         <tr >
@@ -16,7 +16,8 @@ function Task({ task, onDelete, onUpdate }) {
             <td className="task-title">{task.title}</td>
             <td className="task-content">{task.content}</td>
             <td className="task-content">{task.task_type}</td>
-            <td className="task-date">{formattedDate}</td>
+            <td className="task-date">{formattedDate(task.created_at)}</td>
+            <td className="task-date">{formattedDate(task.duedate)}</td>
             <td>
                 <Button color="error" variant="contained" onClick={() => onDelete(task.id)} startIcon={<DeleteIcon />}  size="small">
                     Delete
