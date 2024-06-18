@@ -20,7 +20,7 @@
 > ### Steps
 1. Clone the repository:
     ```bash
-    git clone https://github.com/devika-munusamy/todo-djano-react.git
+    git clone https://github.com/devika-munusamy/todo-django-react.git
     ```
 2. Navigate to the project directory:
     ```bash
